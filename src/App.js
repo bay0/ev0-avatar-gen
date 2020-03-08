@@ -3,7 +3,7 @@ import html2canvas from 'html2canvas'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography, TextField, Container } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
-import { EvolveLogo } from './Components/Logos';
+import { EvolveLogo, EvolveStripes } from './Components/Logos';
 
 function App() {
   const [name, setName] = useState("bay");
@@ -34,6 +34,10 @@ function App() {
       margin: '0 auto',
       width: '250px',
       height: '250px',
+      position: 'relative'
+    },
+    logoItems: {
+      position: 'relative'
     },
     textWrapper: {
       color: `rgba(${textColor.r}, ${textColor.g}, ${textColor.b}, ${textColor.a})`,
@@ -60,7 +64,10 @@ function App() {
             <Grid id="resultImg" container className={dynamicStyles.resultWrapper}>
               <Grid container justify="center" alignItems="center" direction="column">
                 <Grid container direction="column" justify="center" alignItems="center" item className={dynamicStyles.logoWrapper}>
-                  <EvolveLogo className={dynamicStyles.logo} fill={logoFilterColor} />
+                  <Grid item className={dynamicStyles.logo}>
+                    <EvolveStripes className={dynamicStyles.logoItems} fill={logoFilterColor} />
+                    <EvolveLogo className={dynamicStyles.logoItems} fill={logoFilterColor} />
+                  </Grid>
                   <Grid item><Typography className={dynamicStyles.textWrapper}>{name}</Typography></Grid>
                 </Grid>
               </Grid>
