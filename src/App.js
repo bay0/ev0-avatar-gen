@@ -3,11 +3,12 @@ import html2canvas from 'html2canvas'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography, TextField, Container } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
+import { EvolveLogo } from './Components/Logos';
 
 function App() {
   const [name, setName] = useState("bay");
   const [fontSize, setFontSize] = useState(74);
-  const [logoFilterColor, setLogoFilterColor] = useState({a: 1, b: 161, g: 36, r: 153});
+  const [logoFilterColor, setLogoFilterColor] = useState("#FFFFF");
   const [textColor, setTextColor] = useState({a: 1, b: 255, g: 255, r: 255});
   const [borderColor, setBorderColor] = useState({a: 1, b: 255, g: 255, r: 255});
 
@@ -33,8 +34,6 @@ function App() {
       margin: '0 auto',
       width: '250px',
       height: '250px',
-      mixBlendMode: 'multiply',
-      fill: '#FFFFFF'
     },
     textWrapper: {
       color: `rgba(${textColor.r}, ${textColor.g}, ${textColor.b}, ${textColor.a})`,
@@ -45,7 +44,7 @@ function App() {
 
   const handleNameChange = event => setName(event.target.value);
   const handleFontSizeChange = event => setFontSize(event.target.value);
-  const handleLogoFilterColorChange = (color) => setLogoFilterColor(color.rgb);
+  const handleLogoFilterColorChange = (color) => setLogoFilterColor(color.hex);
   const handleTextColorChange = (color) => setTextColor(color.rgb);
   const handleBorderColorChange = (color) => setBorderColor(color.rgb);
   const handleSave = () => {
@@ -61,7 +60,7 @@ function App() {
             <Grid id="resultImg" container className={dynamicStyles.resultWrapper}>
               <Grid container justify="center" alignItems="center" direction="column">
                 <Grid container direction="column" justify="center" alignItems="center" item className={dynamicStyles.logoWrapper}>
-                  <img className={dynamicStyles.logo} alt="logo" src={`${process.env.PUBLIC_URL}/assets/logos/ev0-logo.svg`} />
+                  <EvolveLogo className={dynamicStyles.logo} fill={logoFilterColor} />
                   <Grid item><Typography className={dynamicStyles.textWrapper}>{name}</Typography></Grid>
                 </Grid>
               </Grid>
