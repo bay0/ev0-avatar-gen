@@ -26,17 +26,18 @@ function App() {
       margin: '0 auto',
       width: '500px',
       height: '500px',
-      border: `7px solid rgb(${borderColor.r}, ${borderColor.g}, ${borderColor.b})`,
+      border: `7px solid rgba(${borderColor.r}, ${borderColor.g}, ${borderColor.b}, ${borderColor.a})`,
       borderRadius: '100%',
     },
     logo: {
       margin: '0 auto',
       width: '250px',
       height: '250px',
-      filter: `opacity(0.1) drop-shadow(0 0 0 rgb(${logoFilterColor.r}, ${logoFilterColor.g}, ${logoFilterColor.b}))`
+      mixBlendMode: 'multiply',
+      fill: '#FFFFFF'
     },
     textWrapper: {
-      color: `rgb(${textColor.r}, ${textColor.g}, ${textColor.b})`,
+      color: `rgba(${textColor.r}, ${textColor.g}, ${textColor.b}, ${textColor.a})`,
       fontSize: `${fontSize}px`,
       fontFamily: 'SFProDisplay-BlackItalic'
     }
@@ -60,7 +61,7 @@ function App() {
             <Grid id="resultImg" container className={dynamicStyles.resultWrapper}>
               <Grid container justify="center" alignItems="center" direction="column">
                 <Grid container direction="column" justify="center" alignItems="center" item className={dynamicStyles.logoWrapper}>
-                  <img className={dynamicStyles.logo} alt="logo" src={`${process.env.PUBLIC_URL}/assets/logos/ev0-logo.png`} />
+                  <img className={dynamicStyles.logo} alt="logo" src={`${process.env.PUBLIC_URL}/assets/logos/ev0-logo.svg`} />
                   <Grid item><Typography className={dynamicStyles.textWrapper}>{name}</Typography></Grid>
                 </Grid>
               </Grid>
