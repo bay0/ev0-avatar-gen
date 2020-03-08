@@ -1,8 +1,8 @@
 {
   "name": "ev0-avatar-gen",
   "version": "0.1.0",
+  "homepage": "./",
   "private": true,
-  "homepage:": "https://bay0.github.io/ev0-avatar-gen/",
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@testing-library/jest-dom": "^4.2.4",
