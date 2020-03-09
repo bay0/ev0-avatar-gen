@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import html2canvas from 'html2canvas'
+import html2canvas from 'html2canvas';
+import randomColor from 'randomcolor';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography, TextField, Container, Checkbox, FormControlLabel } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
@@ -79,6 +80,31 @@ function App() {
       document.body.appendChild(canvas);
     });
   }
+
+  const handleRandomMode = () => {
+    setLogoFilterColor(randomColor());
+    const logoGradientColorA = randomColor({format: 'rgbArray'});
+    setLogoGradientColorA({a: 1, b: logoGradientColorA[2], g: logoGradientColorA[1], r: logoGradientColorA[0]});
+    const logoGradientColorB = randomColor({format: 'rgbArray'});
+    setLogoGradientColorB({a: 1, b: logoGradientColorB[2], g: logoGradientColorB[1], r: logoGradientColorB[0]});
+    setLogoStripeColor(randomColor());
+    const textColor = randomColor({format: 'rgbArray'});
+    setTextColor({a: 1, b: textColor[2], g: textColor[1], r: textColor[0]});
+    setBorderColor(randomColor());
+    setUseGradientForLogo(Math.random() >= 0.5);
+    setUseGradientForLogoStripe(Math.random() >= 0.5);
+    setUseGradientForBorder(Math.random() >= 0.5);
+    const logoGradientStripeColorA = randomColor({format: 'rgbArray'});
+    setLogoStripeGradientColorA({a: 1, b: logoGradientStripeColorA[2], g: logoGradientStripeColorA[1], r: logoGradientStripeColorA[0]});
+    const logoGradientStripeColorB = randomColor({format: 'rgbArray'});
+    setLogoStripeGradientColorB({a: 1, b: logoGradientStripeColorB[2], g: logoGradientStripeColorB[1], r: logoGradientStripeColorB[0]});
+    const logoGradientBorderColorA = randomColor({format: 'rgbArray'});
+    setLogoBorderGradientColorA({a: 1, b: logoGradientBorderColorA[2], g: logoGradientBorderColorA[1], r: logoGradientBorderColorA[0]});
+    const logoGradientBorderColorB = randomColor({format: 'rgbArray'});
+    setLogoBorderGradientColorB({a: 1, b: logoGradientBorderColorB[2], g: logoGradientBorderColorB[1], r: logoGradientBorderColorB[0]});
+    handleSave();
+  }
+
   return (
     <React.Fragment>
       <Container maxWidth="xl">
@@ -114,7 +140,10 @@ function App() {
             </Grid>
           </Grid>
           <Grid item id="controls" justify="center" alignItems="center" spacing={2} container direction="column">
-            <Grid item><Button variant="outlined" onClick={handleSave}>Save</Button></Grid>
+            <Grid item justify="center" alignItems="center" container spacing={2}>
+              <Grid item><Button variant="outlined" onClick={handleSave}>Save</Button></Grid>
+              <Grid item><Button variant="outlined" onClick={handleRandomMode}>Random</Button></Grid>
+            </Grid>
             <Grid container justify="center" alignItems="center" spacing={2}>
               <Grid item>
                 <TextField id="outlined-name" label="Name" variant="outlined" value={name} onChange={handleNameChange} />
