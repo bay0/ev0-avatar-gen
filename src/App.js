@@ -3,21 +3,24 @@ import html2canvas from 'html2canvas'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography, TextField, Container, Checkbox, FormControlLabel } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
-import { EvolveLogo } from './Components/Logos';
+import { EvolveLogo, EvolveBorder } from './Components/Logos';
 
 function App() {
   const [name, setName] = useState("bay");
   const [fontSize, setFontSize] = useState(60);
-  const [logoFilterColor, setLogoFilterColor] = useState("#FFFFF");
+  const [logoFilterColor, setLogoFilterColor] = useState("#FFFFFF");
   const [logoGradientColorA, setLogoGradientColorA] = useState({a: 1, b: 255, g: 0, r: 255});
   const [logoGradientColorB, setLogoGradientColorB] = useState({a: 1, b: 255, g: 255, r: 0});
   const [logoStripeGradientColorA, setLogoStripeGradientColorA] = useState({a: 1, b: 255, g: 0, r: 255});
   const [logoStripeGradientColorB, setLogoStripeGradientColorB] = useState({a: 1, b: 255, g: 255, r: 0});
-  const [logoStripeColor, setLogoStripeColor] = useState("#FFFFF");
+  const [logoBorderGradientColorA, setLogoBorderGradientColorA] = useState({a: 1, b: 255, g: 255, r: 0});
+  const [logoBorderGradientColorB, setLogoBorderGradientColorB] = useState({a: 1, b: 255, g: 0, r: 255});
+  const [logoStripeColor, setLogoStripeColor] = useState("#FF0000");
   const [textColor, setTextColor] = useState({a: 1, b: 255, g: 255, r: 255});
-  const [borderColor, setBorderColor] = useState({a: 1, b: 255, g: 255, r: 255});
+  const [borderColor, setBorderColor] = useState("#FF0000");
   const [useGradientForLogo, setUseGradientForLogo] = useState(false);
   const [useGradientForLogoStripe, setUseGradientForLogoStripe] = useState(false);
+  const [useGradientForBorder, setUseGradientForBorder] = useState(false);
 
   const dynamicStyles = makeStyles(theme => ({
     resultWrapper: {
@@ -34,8 +37,6 @@ function App() {
       margin: '0 auto',
       width: '500px',
       height: '500px',
-      border: `7px solid rgba(${borderColor.r}, ${borderColor.g}, ${borderColor.b}, ${borderColor.a})`,
-      borderRadius: '100%',
     },
     logo: {
       margin: '0 auto',
@@ -43,13 +44,18 @@ function App() {
       height: '258px',
       position: 'relative'
     },
+    logoBorder: {
+      width: '500px',
+      height: '500px',
+      position: 'absolute',
+    },
     logoItems: {
       position: 'relative'
     },
     textWrapper: {
       color: `rgba(${textColor.r}, ${textColor.g}, ${textColor.b}, ${textColor.a})`,
       fontSize: `${fontSize}px`,
-      fontFamily: 'SFProDisplay-BlackItalic'
+      fontFamily: 'SFProDisplay-BlackItalic',
     }
   }))()
 
@@ -60,11 +66,14 @@ function App() {
   const handleLogoGradientBColorChange = (color) => setLogoGradientColorB(color.rgb);
   const handleLogoStripeColorChange = (color) => setLogoStripeColor(color.hex);
   const handleTextColorChange = (color) => setTextColor(color.rgb);
-  const handleBorderColorChange = (color) => setBorderColor(color.rgb);
+  const handleBorderColorChange = (color) => setBorderColor(color.hex);
   const handleChangeUseGradientForLogo = event => setUseGradientForLogo(event.target.checked);
   const handleChangeUseGradientForLogoStripe = event => setUseGradientForLogoStripe(event.target.checked);
+  const handleChangeUseGradientForBorder = event => setUseGradientForBorder(event.target.checked);
   const handleLogoStripeGradientAColorChange = (color) => setLogoStripeGradientColorA(color.rgb);
   const handleLogoStripeGradientBColorChange = (color) => setLogoStripeGradientColorB(color.rgb);
+  const handleLogoBorderGradientAColorChange = (color) => setLogoBorderGradientColorA(color.rgb);
+  const handleLogoBorderGradientBColorChange = (color) => setLogoBorderGradientColorB(color.rgb);
   const handleSave = () => {
     html2canvas(document.querySelector("#resultImg")).then(canvas => {
       document.body.appendChild(canvas);
@@ -91,7 +100,15 @@ function App() {
                       stripeFill={logoStripeColor}
                     />
                   </Grid>
-                  <Grid item><Typography className={dynamicStyles.textWrapper}>{name}</Typography></Grid>
+                  <Grid item><Typography className={`${dynamicStyles.textWrapper}`}>{name}</Typography></Grid>
+                  <Grid item className={dynamicStyles.logoBorder}>
+                    <EvolveBorder
+                      useGradientForBorder={useGradientForBorder}
+                      borderColor={borderColor}
+                      logoBorderGradientColorA={logoBorderGradientColorA}
+                      logoBorderGradientColorB={logoBorderGradientColorB}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -116,29 +133,43 @@ function App() {
                 />
               </Grid>
             </Grid>
-            <Grid item>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={useGradientForLogo}
-                    onChange={handleChangeUseGradientForLogo}
-                    color="primary"
-                  />
-                }
-                label="Use Gradient for Logo"
-              />
-            </Grid>
-            <Grid item>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={useGradientForLogoStripe}
-                    onChange={handleChangeUseGradientForLogoStripe}
-                    color="primary"
-                  />
-                }
-                label="Use Gradient for Stripe"
-              />
+            <Grid container justify="center" alignItems="center" spacing={2}>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={useGradientForLogo}
+                      onChange={handleChangeUseGradientForLogo}
+                      color="primary"
+                    />
+                  }
+                  label="Use Gradient for Logo"
+                />
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={useGradientForLogoStripe}
+                      onChange={handleChangeUseGradientForLogoStripe}
+                      color="primary"
+                    />
+                  }
+                  label="Use Gradient for Stripe"
+                />
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={useGradientForBorder}
+                      onChange={handleChangeUseGradientForBorder}
+                      color="primary"
+                    />
+                  }
+                  label="Use Gradient for Border"
+                />
+              </Grid>
             </Grid>
             <Grid container justify="center" alignItems="center" spacing={2}>
               {useGradientForLogo ? (
@@ -203,22 +234,47 @@ function App() {
                     </Grid>
                   </React.Fragment>
               )}
-              <Grid item>
-                <Typography>Color of Text</Typography>
-                <SketchPicker
-                  color={textColor}
-                  id="textColor"
-                  onChangeComplete={handleTextColorChange}
-                />
-              </Grid>
-              <Grid item>
-                <Typography>Color of Border</Typography>
-                <SketchPicker
-                  color={borderColor}
-                  id="borderColor"
-                  onChangeComplete={handleBorderColorChange}
-                />
-              </Grid>
+              <React.Fragment>
+                <Grid item>
+                  <Typography>Color of Text</Typography>
+                  <SketchPicker
+                    color={textColor}
+                    id="textColor"
+                    onChangeComplete={handleTextColorChange}
+                  />
+                </Grid>
+              </React.Fragment>
+              {useGradientForBorder ? (
+                <React.Fragment>
+                  <Grid item>
+                    <Typography>Gradient Color A of Border</Typography>
+                    <SketchPicker
+                      color={logoBorderGradientColorA}
+                      id="logoBorderGradientColorA"
+                      onChangeComplete={handleLogoBorderGradientAColorChange}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Typography>Gradient Color B of Border</Typography>
+                    <SketchPicker
+                      color={logoBorderGradientColorB}
+                      id="logoBorderGradientColorB"
+                      onChangeComplete={handleLogoBorderGradientBColorChange}
+                    />
+                  </Grid>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Grid item>
+                    <Typography>Color of Border</Typography>
+                    <SketchPicker
+                      color={borderColor}
+                      id="borderColor"
+                      onChangeComplete={handleBorderColorChange}
+                    />
+                  </Grid>
+                </React.Fragment>
+              )}
             </Grid>
           </Grid>
         </Grid>
