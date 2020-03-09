@@ -11,10 +11,13 @@ function App() {
   const [logoFilterColor, setLogoFilterColor] = useState("#FFFFF");
   const [logoGradientColorA, setLogoGradientColorA] = useState({a: 1, b: 255, g: 0, r: 255});
   const [logoGradientColorB, setLogoGradientColorB] = useState({a: 1, b: 255, g: 255, r: 0});
+  const [logoStripeGradientColorA, setLogoStripeGradientColorA] = useState({a: 1, b: 255, g: 0, r: 255});
+  const [logoStripeGradientColorB, setLogoStripeGradientColorB] = useState({a: 1, b: 255, g: 255, r: 0});
   const [logoStripeColor, setLogoStripeColor] = useState("#FFFFF");
   const [textColor, setTextColor] = useState({a: 1, b: 255, g: 255, r: 255});
   const [borderColor, setBorderColor] = useState({a: 1, b: 255, g: 255, r: 255});
-  const [useGradient, setUseGradient] = useState(false);
+  const [useGradientForLogo, setUseGradientForLogo] = useState(false);
+  const [useGradientForLogoStripe, setUseGradientForLogoStripe] = useState(false);
 
   const dynamicStyles = makeStyles(theme => ({
     resultWrapper: {
@@ -58,7 +61,10 @@ function App() {
   const handleLogoStripeColorChange = (color) => setLogoStripeColor(color.hex);
   const handleTextColorChange = (color) => setTextColor(color.rgb);
   const handleBorderColorChange = (color) => setBorderColor(color.rgb);
-  const handleChangeUseGradient = event => setUseGradient(event.target.checked);
+  const handleChangeUseGradientForLogo = event => setUseGradientForLogo(event.target.checked);
+  const handleChangeUseGradientForLogoStripe = event => setUseGradientForLogoStripe(event.target.checked);
+  const handleLogoStripeGradientAColorChange = (color) => setLogoStripeGradientColorA(color.rgb);
+  const handleLogoStripeGradientBColorChange = (color) => setLogoStripeGradientColorB(color.rgb);
   const handleSave = () => {
     html2canvas(document.querySelector("#resultImg")).then(canvas => {
       document.body.appendChild(canvas);
@@ -73,7 +79,17 @@ function App() {
               <Grid container justify="center" alignItems="center" direction="column">
                 <Grid container direction="column" justify="center" alignItems="center" item className={dynamicStyles.logoWrapper}>
                   <Grid item className={dynamicStyles.logo}>
-                    <EvolveLogo className={dynamicStyles.logoItems} useGradient={useGradient} logoGradientColorA={logoGradientColorA} logoGradientColorB={logoGradientColorB} logoFill={logoFilterColor} stripeFill={logoStripeColor}/>
+                    <EvolveLogo 
+                      className={dynamicStyles.logoItems}
+                      useGradientForLogo={useGradientForLogo}
+                      useGradientForLogoStripe={useGradientForLogoStripe}
+                      logoGradientColorA={logoGradientColorA}
+                      logoGradientColorB={logoGradientColorB}
+                      logoStripeGradientColorA={logoStripeGradientColorA}
+                      logoStripeGradientColorB={logoStripeGradientColorB}
+                      logoFill={logoFilterColor}
+                      stripeFill={logoStripeColor}
+                    />
                   </Grid>
                   <Grid item><Typography className={dynamicStyles.textWrapper}>{name}</Typography></Grid>
                 </Grid>
@@ -104,47 +120,89 @@ function App() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={useGradient}
-                    onChange={handleChangeUseGradient}
+                    checked={useGradientForLogo}
+                    onChange={handleChangeUseGradientForLogo}
                     color="primary"
                   />
                 }
                 label="Use Gradient for Logo"
               />
             </Grid>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={useGradientForLogoStripe}
+                    onChange={handleChangeUseGradientForLogoStripe}
+                    color="primary"
+                  />
+                }
+                label="Use Gradient for Stripe"
+              />
+            </Grid>
             <Grid container justify="center" alignItems="center" spacing={2}>
-              <Grid item>
-                <Typography>Gradient Color A of Logo Filter</Typography>
-                <SketchPicker
-                  color={logoGradientColorA}
-                  id="logoGradientColorA"
-                  onChangeComplete={handleLogoGradientAColorChange}
-                />
-              </Grid>
-              <Grid item>
-                <Typography>Gradient Color B of Logo Filter</Typography>
-                <SketchPicker
-                  color={logoGradientColorB}
-                  id="logoGradientColorB"
-                  onChangeComplete={handleLogoGradientBColorChange}
-                />
-              </Grid>
-              <Grid item>
-                <Typography>Color of Logo</Typography>
-                <SketchPicker
-                  color={logoFilterColor}
-                  id="logoFilterColor"
-                  onChangeComplete={handleLogoFilterColorChange}
-                />
-              </Grid>
-              <Grid item>
-                <Typography>Color of Logo Stripe</Typography>
-                <SketchPicker
-                  color={logoStripeColor}
-                  id="logoStripeColor"
-                  onChangeComplete={handleLogoStripeColorChange}
-                />
-              </Grid>
+              {useGradientForLogo ? (
+                <React.Fragment>
+                  <Grid item>
+                    <Typography>Gradient Color A of Logo</Typography>
+                    <SketchPicker
+                      color={logoGradientColorA}
+                      id="logoGradientColorA"
+                      onChangeComplete={handleLogoGradientAColorChange}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Typography>Gradient Color B of Logo</Typography>
+                    <SketchPicker
+                      color={logoGradientColorB}
+                      id="logoGradientColorB"
+                      onChangeComplete={handleLogoGradientBColorChange}
+                    />
+                  </Grid>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Grid item>
+                    <Typography>Color of Logo</Typography>
+                    <SketchPicker
+                      color={logoFilterColor}
+                      id="logoFilterColor"
+                      onChangeComplete={handleLogoFilterColorChange}
+                    />
+                  </Grid>
+                </React.Fragment>
+              )}
+              {useGradientForLogoStripe ? (
+                <React.Fragment>
+                  <Grid item>
+                    <Typography>Gradient Color A of Stripe</Typography>
+                    <SketchPicker
+                      color={logoStripeGradientColorA}
+                      id="logoStripeGradientColorA"
+                      onChangeComplete={handleLogoStripeGradientAColorChange}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Typography>Gradient Color B of Stripe</Typography>
+                    <SketchPicker
+                      color={logoStripeGradientColorB}
+                      id="logoStripeGradientColorB"
+                      onChangeComplete={handleLogoStripeGradientBColorChange}
+                    />
+                  </Grid>
+                </React.Fragment>
+              ) : (
+                  <React.Fragment>
+                    <Grid item>
+                      <Typography>Color of Logo Stripe</Typography>
+                      <SketchPicker
+                        color={logoStripeColor}
+                        id="logoStripeColor"
+                        onChangeComplete={handleLogoStripeColorChange}
+                      />
+                    </Grid>
+                  </React.Fragment>
+              )}
               <Grid item>
                 <Typography>Color of Text</Typography>
                 <SketchPicker
