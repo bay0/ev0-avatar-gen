@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import html2canvas from 'html2canvas'
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Button, Typography, TextField, Container } from '@material-ui/core';
+import { Grid, Button, Typography, TextField, Container, Checkbox, FormControlLabel } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
 import { EvolveLogo } from './Components/Logos';
 
 function App() {
   const [name, setName] = useState("bay");
-  const [fontSize, setFontSize] = useState(74);
+  const [fontSize, setFontSize] = useState(60);
   const [logoFilterColor, setLogoFilterColor] = useState("#FFFFF");
+  const [logoGradientColorA, setLogoGradientColorA] = useState({a: 1, b: 255, g: 0, r: 255});
+  const [logoGradientColorB, setLogoGradientColorB] = useState({a: 1, b: 255, g: 255, r: 0});
   const [logoStripeColor, setLogoStripeColor] = useState("#FFFFF");
   const [textColor, setTextColor] = useState({a: 1, b: 255, g: 255, r: 255});
   const [borderColor, setBorderColor] = useState({a: 1, b: 255, g: 255, r: 255});
+  const [useGradient, setUseGradient] = useState(false);
 
   const dynamicStyles = makeStyles(theme => ({
     resultWrapper: {
@@ -50,9 +53,12 @@ function App() {
   const handleNameChange = event => setName(event.target.value);
   const handleFontSizeChange = event => setFontSize(event.target.value);
   const handleLogoFilterColorChange = (color) => setLogoFilterColor(color.hex);
+  const handleLogoGradientAColorChange = (color) => setLogoGradientColorA(color.rgb);
+  const handleLogoGradientBColorChange = (color) => setLogoGradientColorB(color.rgb);
   const handleLogoStripeColorChange = (color) => setLogoStripeColor(color.hex);
   const handleTextColorChange = (color) => setTextColor(color.rgb);
   const handleBorderColorChange = (color) => setBorderColor(color.rgb);
+  const handleChangeUseGradient = event => setUseGradient(event.target.checked);
   const handleSave = () => {
     html2canvas(document.querySelector("#resultImg")).then(canvas => {
       document.body.appendChild(canvas);
@@ -60,14 +66,14 @@ function App() {
   }
   return (
     <React.Fragment>
-      <Container>
+      <Container maxWidth="xl">
         <Grid container direction="column" spacing={2} justify="center" alignItems="center">
           <Grid item>
             <Grid id="resultImg" container className={dynamicStyles.resultWrapper}>
               <Grid container justify="center" alignItems="center" direction="column">
                 <Grid container direction="column" justify="center" alignItems="center" item className={dynamicStyles.logoWrapper}>
                   <Grid item className={dynamicStyles.logo}>
-                    <EvolveLogo className={dynamicStyles.logoItems} logoFill={logoFilterColor} stripeFill={logoStripeColor}/>
+                    <EvolveLogo className={dynamicStyles.logoItems} useGradient={useGradient} logoGradientColorA={logoGradientColorA} logoGradientColorB={logoGradientColorB} logoFill={logoFilterColor} stripeFill={logoStripeColor}/>
                   </Grid>
                   <Grid item><Typography className={dynamicStyles.textWrapper}>{name}</Typography></Grid>
                 </Grid>
@@ -94,9 +100,37 @@ function App() {
                 />
               </Grid>
             </Grid>
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={useGradient}
+                    onChange={handleChangeUseGradient}
+                    color="primary"
+                  />
+                }
+                label="Use Gradient for Logo"
+              />
+            </Grid>
             <Grid container justify="center" alignItems="center" spacing={2}>
               <Grid item>
-                <Typography>Color of Logo Filter</Typography>
+                <Typography>Gradient Color A of Logo Filter</Typography>
+                <SketchPicker
+                  color={logoGradientColorA}
+                  id="logoGradientColorA"
+                  onChangeComplete={handleLogoGradientAColorChange}
+                />
+              </Grid>
+              <Grid item>
+                <Typography>Gradient Color B of Logo Filter</Typography>
+                <SketchPicker
+                  color={logoGradientColorB}
+                  id="logoGradientColorB"
+                  onChangeComplete={handleLogoGradientBColorChange}
+                />
+              </Grid>
+              <Grid item>
+                <Typography>Color of Logo</Typography>
                 <SketchPicker
                   color={logoFilterColor}
                   id="logoFilterColor"
