@@ -3,12 +3,13 @@ import html2canvas from 'html2canvas'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography, TextField, Container } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
-import { EvolveLogo, EvolveStripes } from './Components/Logos';
+import { EvolveLogo } from './Components/Logos';
 
 function App() {
   const [name, setName] = useState("bay");
   const [fontSize, setFontSize] = useState(74);
   const [logoFilterColor, setLogoFilterColor] = useState("#FFFFF");
+  const [logoStripeColor, setLogoStripeColor] = useState("#FFFFF");
   const [textColor, setTextColor] = useState({a: 1, b: 255, g: 255, r: 255});
   const [borderColor, setBorderColor] = useState({a: 1, b: 255, g: 255, r: 255});
 
@@ -32,8 +33,8 @@ function App() {
     },
     logo: {
       margin: '0 auto',
-      width: '250px',
-      height: '250px',
+      width: '333px',
+      height: '258px',
       position: 'relative'
     },
     logoItems: {
@@ -49,6 +50,7 @@ function App() {
   const handleNameChange = event => setName(event.target.value);
   const handleFontSizeChange = event => setFontSize(event.target.value);
   const handleLogoFilterColorChange = (color) => setLogoFilterColor(color.hex);
+  const handleLogoStripeColorChange = (color) => setLogoStripeColor(color.hex);
   const handleTextColorChange = (color) => setTextColor(color.rgb);
   const handleBorderColorChange = (color) => setBorderColor(color.rgb);
   const handleSave = () => {
@@ -65,8 +67,7 @@ function App() {
               <Grid container justify="center" alignItems="center" direction="column">
                 <Grid container direction="column" justify="center" alignItems="center" item className={dynamicStyles.logoWrapper}>
                   <Grid item className={dynamicStyles.logo}>
-                    <EvolveStripes className={dynamicStyles.logoItems} fill={logoFilterColor} />
-                    <EvolveLogo className={dynamicStyles.logoItems} fill={logoFilterColor} />
+                    <EvolveLogo className={dynamicStyles.logoItems} logoFill={logoFilterColor} stripeFill={logoStripeColor}/>
                   </Grid>
                   <Grid item><Typography className={dynamicStyles.textWrapper}>{name}</Typography></Grid>
                 </Grid>
@@ -100,6 +101,14 @@ function App() {
                   color={logoFilterColor}
                   id="logoFilterColor"
                   onChangeComplete={handleLogoFilterColorChange}
+                />
+              </Grid>
+              <Grid item>
+                <Typography>Color of Logo Stripe</Typography>
+                <SketchPicker
+                  color={logoStripeColor}
+                  id="logoStripeColor"
+                  onChangeComplete={handleLogoStripeColorChange}
                 />
               </Grid>
               <Grid item>
