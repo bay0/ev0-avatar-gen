@@ -6,7 +6,7 @@ import { Grid, Button, Typography, TextField, Container, Checkbox, FormControlLa
 import { SketchPicker } from 'react-color';
 import { EvolveLogo, EvolveBorder } from './Components/Logos';
 
-function App() {
+function Gen() {
   const [name, setName] = useState("bay");
   const [fontSize, setFontSize] = useState(60);
   const [logoFilterColor, setLogoFilterColor] = useState("#FFFFFF");
@@ -26,9 +26,8 @@ function App() {
   const dynamicStyles = makeStyles(theme => ({
     resultWrapper: {
       flexGrow: 1,
-      border: '1px solid black',
-      width: '512px',
-      height: '512px',
+      width: '500px',
+      height: '500px',
       backgroundImage: `url(${process.env.PUBLIC_URL}/assets/backgrounds/1.png)`,
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'contain'
@@ -75,10 +74,31 @@ function App() {
   const handleLogoStripeGradientBColorChange = (color) => setLogoStripeGradientColorB(color.rgb);
   const handleLogoBorderGradientAColorChange = (color) => setLogoBorderGradientColorA(color.rgb);
   const handleLogoBorderGradientBColorChange = (color) => setLogoBorderGradientColorB(color.rgb);
+
+
   const handleSave = () => {
+    //https://github.com/niklasvh/html2canvas/issues/1438
+    //Scroll to top so that the canvas can capture the element
+    window.scrollTo(0,0);
+    document.documentElement.classList.add("hide-scrollbar");
     html2canvas(document.querySelector("#resultImg")).then(canvas => {
-      document.body.appendChild(canvas);
+      saveAs(canvas.toDataURL(), `${name}-ev0lve-avatar.png`)
+      //document.body.appendChild(canvas);
     });
+    document.documentElement.classList.remove("hide-scrollbar");
+  }
+
+  const saveAs = (uri, filename) => {
+    let link = document.createElement('a');
+    if (typeof link.download === 'string') {
+        link.href = uri;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        window.open(uri);
+    }
   }
 
   const handleRandomMode = () => {
@@ -102,39 +122,36 @@ function App() {
     setLogoBorderGradientColorA({a: 1, b: logoGradientBorderColorA[2], g: logoGradientBorderColorA[1], r: logoGradientBorderColorA[0]});
     const logoGradientBorderColorB = randomColor({format: 'rgbArray'});
     setLogoBorderGradientColorB({a: 1, b: logoGradientBorderColorB[2], g: logoGradientBorderColorB[1], r: logoGradientBorderColorB[0]});
-    handleSave();
   }
 
   return (
     <React.Fragment>
       <Container maxWidth="xl">
-        <Grid container direction="column" spacing={2} justify="center" alignItems="center">
+        <Grid container direction="column" spacing={4} justify="center" alignItems="center">
           <Grid item>
-            <Grid id="resultImg" container className={dynamicStyles.resultWrapper}>
-              <Grid container justify="center" alignItems="center" direction="column">
-                <Grid container direction="column" justify="center" alignItems="center" item className={dynamicStyles.logoWrapper}>
-                  <Grid item className={dynamicStyles.logo}>
-                    <EvolveLogo 
-                      className={dynamicStyles.logoItems}
-                      useGradientForLogo={useGradientForLogo}
-                      useGradientForLogoStripe={useGradientForLogoStripe}
-                      logoGradientColorA={logoGradientColorA}
-                      logoGradientColorB={logoGradientColorB}
-                      logoStripeGradientColorA={logoStripeGradientColorA}
-                      logoStripeGradientColorB={logoStripeGradientColorB}
-                      logoFill={logoFilterColor}
-                      stripeFill={logoStripeColor}
-                    />
-                  </Grid>
-                  <Grid item><Typography className={`${dynamicStyles.textWrapper}`}>{name}</Typography></Grid>
-                  <Grid item className={dynamicStyles.logoBorder}>
-                    <EvolveBorder
-                      useGradientForBorder={useGradientForBorder}
-                      borderColor={borderColor}
-                      logoBorderGradientColorA={logoBorderGradientColorA}
-                      logoBorderGradientColorB={logoBorderGradientColorB}
-                    />
-                  </Grid>
+            <Grid container className={dynamicStyles.resultWrapper}  id="resultImg" justify="center" alignItems="center" direction="column">
+              <Grid container direction="column" justify="center" alignItems="center" item className={dynamicStyles.logoWrapper}>
+                <Grid item className={dynamicStyles.logo}>
+                  <EvolveLogo 
+                    className={dynamicStyles.logoItems}
+                    useGradientForLogo={useGradientForLogo}
+                    useGradientForLogoStripe={useGradientForLogoStripe}
+                    logoGradientColorA={logoGradientColorA}
+                    logoGradientColorB={logoGradientColorB}
+                    logoStripeGradientColorA={logoStripeGradientColorA}
+                    logoStripeGradientColorB={logoStripeGradientColorB}
+                    logoFill={logoFilterColor}
+                    stripeFill={logoStripeColor}
+                  />
+                </Grid>
+                <Grid item><Typography className={`${dynamicStyles.textWrapper}`}>{name}</Typography></Grid>
+                <Grid item className={dynamicStyles.logoBorder}>
+                  <EvolveBorder
+                    useGradientForBorder={useGradientForBorder}
+                    borderColor={borderColor}
+                    logoBorderGradientColorA={logoBorderGradientColorA}
+                    logoBorderGradientColorB={logoBorderGradientColorB}
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -312,4 +329,4 @@ function App() {
   );
 }
 
-export default App;
+export default Gen;

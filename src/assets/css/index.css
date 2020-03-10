@@ -2,3 +2,8 @@
     font-family: 'SFProDisplay-BlackItalic';
     src: local('SFPro'), url(../fonts/SFProDisplay-BlackItalic.ttf) format('truetype');
 }
+
+.hide-scrollbar {
+	overflow: -moz-hidden-unscrollable;
+	overflow: hidden;
+}
