@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.1.2",
     "gh-pages": "^2.2.0",
     "html2canvas": "^1.0.0-rc.5",
+    "node-sass": "^4.13.1",
     "nord": "^0.2.1",
     "randomcolor": "^0.5.4",
     "react": "^16.13.0",

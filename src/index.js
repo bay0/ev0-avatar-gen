@@ -1,18 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './assets/css/index.css';
-import Gen from './Gen';
 import * as serviceWorker from './serviceWorker';
+import Gen from './Components/Gen';
+import './assets/sass/index.sass';
 import { ThemeProvider } from '@material-ui/core/styles';
-import  { CssBaseline, createMuiTheme } from '@material-ui/core';
+import  { CssBaseline } from '@material-ui/core';
+import { theme } from './Components/Theme';
 
 function App() {
-    const theme = createMuiTheme({
-        palette: {
-          type: 'dark',
-        },
-    });
-  
     return (
       <ThemeProvider theme={theme}>
           <CssBaseline />

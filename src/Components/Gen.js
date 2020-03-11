@@ -4,9 +4,9 @@ import randomColor from 'randomcolor';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography, TextField, Container, Checkbox, FormControlLabel } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
-import { EvolveLogo, EvolveBorder } from './Components/Logos';
+import { EvolveLogo, EvolveBorder } from './Logos';
 
-function Gen() {
+export default function Gen() {
   const [name, setName] = useState("bay");
   const [fontSize, setFontSize] = useState(60);
   const [logoFilterColor, setLogoFilterColor] = useState("#FFFFFF");
@@ -328,5 +328,3 @@ function Gen() {
     </React.Fragment>
   );
 }
-
-export default Gen;
