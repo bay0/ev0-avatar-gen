@@ -22,6 +22,8 @@ export default function Gen() {
   const [useGradientForLogo, setUseGradientForLogo] = useState(false);
   const [useGradientForLogoStripe, setUseGradientForLogoStripe] = useState(false);
   const [useGradientForBorder, setUseGradientForBorder] = useState(false);
+  const [useRectBorder, setUseRectBorder] = useState(false);
+  const [useCircleBorder, setUseCircleBorder] = useState(true);
 
   const dynamicStyles = makeStyles(theme => ({
     resultWrapper: {
@@ -74,7 +76,8 @@ export default function Gen() {
   const handleLogoStripeGradientBColorChange = (color) => setLogoStripeGradientColorB(color.rgb);
   const handleLogoBorderGradientAColorChange = (color) => setLogoBorderGradientColorA(color.rgb);
   const handleLogoBorderGradientBColorChange = (color) => setLogoBorderGradientColorB(color.rgb);
-
+  const handleChangeUseCircleForBorder = event => setUseCircleBorder(event.target.checked);
+  const handleChangeUseRectForBorder = event => setUseRectBorder(event.target.checked);
 
   const handleSave = () => {
     //https://github.com/niklasvh/html2canvas/issues/1438
@@ -122,6 +125,9 @@ export default function Gen() {
     setLogoBorderGradientColorA({a: 1, b: logoGradientBorderColorA[2], g: logoGradientBorderColorA[1], r: logoGradientBorderColorA[0]});
     const logoGradientBorderColorB = randomColor({format: 'rgbArray'});
     setLogoBorderGradientColorB({a: 1, b: logoGradientBorderColorB[2], g: logoGradientBorderColorB[1], r: logoGradientBorderColorB[0]});
+    const handleBorderShape = Math.random() >= 0.5; 
+    setUseCircleBorder(handleBorderShape);
+    setUseRectBorder(!handleBorderShape);
   }
 
   return (
@@ -151,6 +157,8 @@ export default function Gen() {
                     borderColor={borderColor}
                     logoBorderGradientColorA={logoBorderGradientColorA}
                     logoBorderGradientColorB={logoBorderGradientColorB}
+                    useRect={useRectBorder}
+                    useCircle={useCircleBorder}
                   />
                 </Grid>
               </Grid>
@@ -214,6 +222,30 @@ export default function Gen() {
                     />
                   }
                   label="Use Gradient for Border"
+                />
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={useCircleBorder}
+                      onChange={handleChangeUseCircleForBorder}
+                      color="primary"
+                    />
+                  }
+                  label="Border Circle"
+                />
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={useRectBorder}
+                      onChange={handleChangeUseRectForBorder}
+                      color="primary"
+                    />
+                  }
+                  label="Border Rect"
                 />
               </Grid>
             </Grid>

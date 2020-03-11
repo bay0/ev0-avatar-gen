@@ -18,7 +18,7 @@ export const EvolveLogo = ({ logoFill, stripeFill, useGradientForLogo, useGradie
     </svg>
 );
 
-export const EvolveBorder = ({ borderColor, useGradientForBorder, logoBorderGradientColorA, logoBorderGradientColorB }) => (
+export const EvolveBorder = ({ borderColor, useGradientForBorder, logoBorderGradientColorA, logoBorderGradientColorB, useRect, useCircle }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" preserveAspectRatio="none">
         <defs>
             <linearGradient id="logoBorderGradient">
@@ -26,6 +26,7 @@ export const EvolveBorder = ({ borderColor, useGradientForBorder, logoBorderGrad
                 <stop offset="1" style={{stopColor: `rgb(${logoBorderGradientColorB.r}, ${logoBorderGradientColorB.g}, ${logoBorderGradientColorB.b})`}} />
             </linearGradient>
         </defs>
-        <circle r="240" cy="50%" cx="50%" style={{fill: 'none', stroke: useGradientForBorder ? 'url(#logoBorderGradient)' : borderColor, strokeWidth: 7}} />
+        {useRect && (<rect x="10" y="10" width="480" height="480" stroke={useGradientForBorder ? 'url(#logoBorderGradient)' : borderColor} fill="transparent" stroke-width="7"/>)}
+        {useCircle && (<circle r="240" cy="50%" cx="50%" style={{fill: 'none', stroke: useGradientForBorder ? 'url(#logoBorderGradient)' : borderColor, strokeWidth: 7}} />)}
     </svg>
 )
