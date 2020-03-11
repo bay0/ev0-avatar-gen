@@ -26,7 +26,7 @@ export const EvolveBorder = ({ borderColor, useGradientForBorder, logoBorderGrad
                 <stop offset="1" style={{stopColor: `rgb(${logoBorderGradientColorB.r}, ${logoBorderGradientColorB.g}, ${logoBorderGradientColorB.b})`}} />
             </linearGradient>
         </defs>
-        {useRect && (<rect x="10" y="10" width="480" height="480" stroke={useGradientForBorder ? 'url(#logoBorderGradient)' : borderColor} fill="transparent" stroke-width="7"/>)}
+        {useRect && (<rect x="10" y="10" width="480" height="480" stroke={useGradientForBorder ? 'url(#logoBorderGradient)' : borderColor} fill="transparent" strokeWidth="7"/>)}
         {useCircle && (<circle r="240" cy="50%" cx="50%" style={{fill: 'none', stroke: useGradientForBorder ? 'url(#logoBorderGradient)' : borderColor, strokeWidth: 7}} />)}
     </svg>
 )

@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography, TextField, Container, Checkbox, FormControlLabel } from '@material-ui/core';
 import { SketchPicker } from 'react-color';
 import { EvolveLogo, EvolveBorder } from './Logos';
+import Footer from './Footer';
 
 export default function Gen() {
   const [name, setName] = useState("bay");
@@ -84,7 +85,7 @@ export default function Gen() {
     //Scroll to top so that the canvas can capture the element
     window.scrollTo(0,0);
     document.documentElement.classList.add("hide-scrollbar");
-    html2canvas(document.querySelector("#resultImg")).then(canvas => {
+    html2canvas(document.querySelector("#resultImg"), {useCORS : true}).then(canvas => {
       saveAs(canvas.toDataURL(), `${name}-ev0lve-avatar.png`)
       //document.body.appendChild(canvas);
     });
@@ -357,6 +358,9 @@ export default function Gen() {
           </Grid>
         </Grid>
       </Container>
+      <Footer>
+        Made with <span role="img" aria-label="heart">❤️</span> by bay
+      </Footer>
     </React.Fragment>
   );
 }
